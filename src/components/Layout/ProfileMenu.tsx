@@ -1,4 +1,4 @@
-import { Avatar, Card, Drawer, Menu, Space } from 'antd'
+import { Avatar, Drawer, Menu, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
 import { cloneElement, ReactElement, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -31,31 +31,24 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
         onClose={handleClick}
       >
         <Space direction='vertical' style={{ width: '100%' }}>
-          <Card
-            size='small'
-            actions={[
-              <div key='followers'>
-                <div>10</div>
-                <div>Followers</div>
-              </div>,
-              <div key='following'>
-                <div>10</div>
-                <div>Following</div>
-              </div>
-            ]}
-          >
-            <Card.Meta
-              avatar={<Avatar />}
-              // title={user.fullName}
-              // description={user.email}
-            />
-          </Card>
+          <div style={{ textAlign: 'center' }}>
+            <Space direction='vertical' style={{ width: '100%' }}>
+              <Avatar size={64} shape='square' />
+              <div style={{ fontWeight: 800 }}>Nama</div>
+              <div>@nama</div>
+            </Space>
+
+          </div>
           <Menu
             onClick={handleClick}
             items={[
               {
                 key: '/users/me',
                 label: <Link to={'/users/me'}>Profile</Link>
+              },
+              {
+                key: '/stories/mine',
+                label: <Link to={'/stories/mine'}>My Stories</Link>
               },
               {
                 key: '/notifications',

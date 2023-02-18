@@ -1,4 +1,5 @@
 import { Layout, theme } from 'antd'
+import ScrollToTop from 'components/utils/ScrollToTop'
 import { ReactNode } from 'react'
 import styled from 'styled-components'
 import Content from './Content'
@@ -18,6 +19,11 @@ export default function LayoutDefault ({ children, searchComponent }: LayoutDefa
   }
   .ant-layout-header {
     padding: 0;
+    background: #FFF;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
   }
   .ant-layout-content {
     padding: 0;
@@ -42,6 +48,7 @@ export default function LayoutDefault ({ children, searchComponent }: LayoutDefa
       <Layout.Footer>
         <Footer />
       </Layout.Footer>
+      <ScrollToTop />
     </StyledLayout>
   )
 }

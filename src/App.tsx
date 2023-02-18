@@ -1,12 +1,17 @@
 import { ConfigProvider, theme } from 'antd'
 import ChapterEdit from 'pages/ChapterEdit'
-import StoryDetails from 'pages/StoryDetails'
+import ManageArticleCategories from 'pages/ManageArticleCategories'
+import ManageArticles from 'pages/ManageArticles'
+import ManagePublications from 'pages/ManagePublications'
+import ManageStories from 'pages/ManageStories'
+import ManageStoryCategories from 'pages/ManageStoryCategories'
+import ManageStoryDetails from 'pages/ManageStoryDetails'
+import ManageUserDetails from 'pages/ManageUserDetails'
+import ManageUsers from 'pages/ManageUsers'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import './App.css'
 import Auth from './pages/Auth'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
-import UserDetails from './pages/UserDetails'
 
 const router = createBrowserRouter([
   {
@@ -15,19 +20,49 @@ const router = createBrowserRouter([
     element: <Home />
   },
   {
+    id: '/users',
+    path: '/users',
+    element: <ManageUsers />
+  },
+  {
+    id: '/users/:id',
+    path: '/users/:id',
+    element: <ManageUserDetails />
+  },
+  {
+    id: '/publications',
+    path: '/publications',
+    element: <ManagePublications />
+  },
+  {
+    id: '/stories',
+    path: '/stories',
+    element: <ManageStories />
+  },
+  {
+    id: '/stories/categories',
+    path: '/stories/categories',
+    element: <ManageStoryCategories />
+  },
+  {
+    id: '/stories/:id',
+    path: '/stories/:id',
+    element: <ManageStoryDetails />
+  },
+  {
+    id: '/articles',
+    path: '/articles',
+    element: <ManageArticles />
+  },
+  {
+    id: '/articles/categories',
+    path: '/articles/categories',
+    element: <ManageArticleCategories />
+  },
+  {
     id: '/auth/:sectionId',
     path: '/auth/:sectionId',
     element: <Auth />
-  },
-  {
-    id: '/users/:userId',
-    path: '/users/:userId',
-    element: <UserDetails />
-  },
-  {
-    id: '/stories/:storyId',
-    path: '/stories/:storyId',
-    element: <StoryDetails />
   },
   {
     id: '/stories/:storyId/chapters/:chapterId/write',

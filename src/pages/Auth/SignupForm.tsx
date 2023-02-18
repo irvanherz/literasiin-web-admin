@@ -18,14 +18,21 @@ export default function SignupForm () {
         name='email'
         rules={[{ required: true, message: 'Email is required' }]}
       >
-        <Input type="email" placeholder="Email"/>
+        <Input type="email" placeholder="Email" maxLength={255} />
+      </Form.Item>
+      <Form.Item
+        label="Username"
+        name='username'
+        rules={[{ required: true, message: 'Username is required' }]}
+      >
+        <Input placeholder="Username" maxLength={255} />
       </Form.Item>
       <Form.Item
         label="Full name"
         name='fullName'
         rules={[{ required: true, message: 'Full name is required' }]}
       >
-        <Input placeholder="Full name"/>
+        <Input placeholder="Full name" maxLength={255} />
       </Form.Item>
       <Form.Item
         label="Gender"
@@ -50,7 +57,7 @@ export default function SignupForm () {
         name='password'
         rules={[{ required: true, message: 'Password is required' }]}
       >
-        <Input type="password" placeholder="Password"/>
+        <Input type="password" placeholder="Password" maxLength={50} />
       </Form.Item>
       <Form.Item
         label="Confirm your password"
@@ -58,7 +65,7 @@ export default function SignupForm () {
         dependencies={['password']}
         rules={[{ required: true, message: 'Please verify your password', validator: validatePasswordConfirmation }]}
       >
-        <Input type="password" placeholder="Password"/>
+        <Input type="password" placeholder="Password" maxLength={50}/>
       </Form.Item>
     </Form.Provider>
   )
