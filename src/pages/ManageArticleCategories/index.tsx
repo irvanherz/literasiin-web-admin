@@ -1,5 +1,6 @@
 import { Button, List, Space } from 'antd'
 import Layout from 'components/Layout'
+import RouteGuard from 'components/RouteGuard'
 import { useQuery } from 'react-query'
 import ArticlesService from 'services/Articles'
 import ReorderCategoriesButton from './ReorderCategoriesButton'
@@ -9,31 +10,34 @@ export default function ManageArticleCategories () {
   const categories: any[] = data?.data || []
 
   return (
-    <Layout.Admin
-      menuProps={{ defaultOpenKeys: ['articles'], selectedKeys: ['articles.categories'] }}
-      applet={
-        <ReorderCategoriesButton categories={categories}>
-          <Button>Reorder</Button>
-        </ReorderCategoriesButton>
+    <RouteGuard require='authenticated'>
+      <Layout.Admin
+        menuProps={{ defaultOpenKeys: ['articles'], selectedKeys: ['articles.categories'] }}
+        applet={
+          <ReorderCategoriesButton categories={categories}>
+            <Button>Reorder</Button>
+          </ReorderCategoriesButton>
       }
     >
-      <List
-        dataSource={categories}
-        renderItem={cat => (
-          <List.Item
-            extra={
-              <Space>
-                <Button>Edit</Button>
-                <Button>Delete</Button>
-              </Space>
+        <List
+          dataSource={categories}
+          renderItem={cat => (
+            <List.Item
+              extra={
+                <Space>
+                  <Button>Edit</Button>
+                  <Button>Delete</Button>
+                </Space>
             }
           >
-            <List.Item.Meta
-              title={cat?.name}
+              <List.Item.Meta
+                title={cat?.name}
             />
-          </List.Item>
-        )}
+            </List.Item>
+          )}
       />
-    </Layout.Admin>
+      </Layout.Admin>
+    </RouteGuard>
+
   )
 }

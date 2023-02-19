@@ -96,8 +96,6 @@ export default function MediaPickerInput ({ filters = {}, value, defaultValue, o
   }
 
   const handleAfterUploadDone = async (info: any) => {
-    console.log(info)
-
     await refetch()
     const data = JSON.parse(info.file.xhr.response)
 

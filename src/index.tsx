@@ -1,12 +1,20 @@
 import AuthContextProvider from 'contexts/AuthContextProvider'
-import { getAnalytics } from 'firebase/analytics'
-import { initializeApp } from 'firebase/app'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import App from './App'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
+
+import AxiosInterceptor from 'components/shared/AxiosInterceptor'
+import CurrentUserContextProvider from 'contexts/CurrentUserContextProvider'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import { getAnalytics } from 'firebase/analytics'
+import { initializeApp } from 'firebase/app'
+
+dayjs.extend(relativeTime)
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,8 +30,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
 }
 
-console.log(firebaseConfig)
-
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig)
 export const analytics = getAnalytics(app)
@@ -35,11 +41,15 @@ const queryClient = new QueryClient()
 
 root.render(
   <React.StrictMode>
-    <AuthContextProvider>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </AuthContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+        <AxiosInterceptor>
+          <CurrentUserContextProvider>
+            <App />
+          </CurrentUserContextProvider>
+        </AxiosInterceptor>
+      </AuthContextProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 )
 

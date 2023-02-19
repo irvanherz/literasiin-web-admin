@@ -1,5 +1,6 @@
 import { Button, Col, Input, List, Row, Select, Space } from 'antd'
 import Layout from 'components/Layout'
+import RouteGuard from 'components/RouteGuard'
 import { useQuery } from 'react-query'
 import PublicationsService from 'services/Publications'
 
@@ -11,40 +12,42 @@ export default function ManagePublications () {
   const publications: any[] = data?.data || []
 
   return (
-    <Layout.Admin
-      applet={
-        <Row gutter={8}>
-          <Col span={5}>
-            <Input.Search placeholder='Search stories...' />
-          </Col>
-          <Col span={5}>
-            <Select options={STATUS_OPTIONS} style={{ width: '100%' }} placeholder="Publish status..." />
-          </Col>
-          <Col span={5}>
-            <Select options={SORT_OPTIONS} style={{ width: '100%' }} placeholder="Sort..." />
-          </Col>
-        </Row>
-      }
-    >
-      <List
-        dataSource={publications}
-        renderItem={publication => (
-          <List.Item
-            extra={
-              <Space>
-                <Button>Details</Button>
-                <Button>Edit</Button>
-                <Button>Delete</Button>
-              </Space>
-            }
-          >
-            <List.Item.Meta
-              title="Publication"
-              description="Deskripsi"
-            />
-          </List.Item>
-        )}
-      />
-    </Layout.Admin>
+    <RouteGuard require='authenticated'>
+      <Layout.Admin
+        applet={
+          <Row gutter={8}>
+            <Col span={5}>
+              <Input.Search placeholder='Search stories...' />
+            </Col>
+            <Col span={5}>
+              <Select options={STATUS_OPTIONS} style={{ width: '100%' }} placeholder="Publish status..." />
+            </Col>
+            <Col span={5}>
+              <Select options={SORT_OPTIONS} style={{ width: '100%' }} placeholder="Sort..." />
+            </Col>
+          </Row>
+        }
+      >
+        <List
+          dataSource={publications}
+          renderItem={publication => (
+            <List.Item
+              extra={
+                <Space>
+                  <Button>Details</Button>
+                  <Button>Edit</Button>
+                  <Button>Delete</Button>
+                </Space>
+              }
+            >
+              <List.Item.Meta
+                title="Publication"
+                description="Deskripsi"
+              />
+            </List.Item>
+          )}
+        />
+      </Layout.Admin>
+    </RouteGuard>
   )
 }
