@@ -1,4 +1,5 @@
 import { Space, Tabs } from 'antd'
+import AdminGuard from 'components/AdminGuard'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import { useQuery } from 'react-query'
@@ -17,22 +18,24 @@ export default function ManageUserDetails () {
 
   return (
     <RouteGuard require='authenticated'>
-      <Layout.Admin
-        breadcrumb={[
-          { breadcrumbName: 'Home', path: '/' },
-          { breadcrumbName: 'Users', path: '/users' },
-          { breadcrumbName: user?.fullName, path: `/users/${user?.id}` }
-        ]}
-      >
-        <Space direction='vertical' style={{ width: '100%' }}>
-          <Tabs>
-            <Tabs.TabPane key='summary' tab="Summary"><UserSummaryTab user={user} /></Tabs.TabPane>
-            <Tabs.TabPane key='edit' tab="Edit"><UserEditTab user={user} afterUpdated={refetch}/></Tabs.TabPane>
-            <Tabs.TabPane key='identities' tab="Identities"><UserIdentitesTab user={user} /></Tabs.TabPane>
-            <Tabs.TabPane key='stories' tab="Stories"><UserStoriesTab user={user} /></Tabs.TabPane>
-          </Tabs>
-        </Space>
-      </Layout.Admin>
+      <AdminGuard>
+        <Layout.Admin
+          breadcrumb={[
+            { breadcrumbName: 'Home', path: '/' },
+            { breadcrumbName: 'Users', path: '/users' },
+            { breadcrumbName: user?.fullName, path: `/users/${user?.id}` }
+          ]}
+        >
+          <Space direction='vertical' style={{ width: '100%' }}>
+            <Tabs>
+              <Tabs.TabPane key='summary' tab="Summary"><UserSummaryTab user={user} /></Tabs.TabPane>
+              <Tabs.TabPane key='edit' tab="Edit"><UserEditTab user={user} afterUpdated={refetch}/></Tabs.TabPane>
+              <Tabs.TabPane key='identities' tab="Identities"><UserIdentitesTab user={user} /></Tabs.TabPane>
+              <Tabs.TabPane key='stories' tab="Stories"><UserStoriesTab user={user} /></Tabs.TabPane>
+            </Tabs>
+          </Space>
+        </Layout.Admin>
+      </AdminGuard>
     </RouteGuard>
   )
 }

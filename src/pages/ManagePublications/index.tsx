@@ -1,4 +1,5 @@
 import { Button, Col, Input, List, Row, Select, Space } from 'antd'
+import AdminGuard from 'components/AdminGuard'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import { useQuery } from 'react-query'
@@ -13,41 +14,43 @@ export default function ManagePublications () {
 
   return (
     <RouteGuard require='authenticated'>
-      <Layout.Admin
-        applet={
-          <Row gutter={8}>
-            <Col span={5}>
-              <Input.Search placeholder='Search stories...' />
-            </Col>
-            <Col span={5}>
-              <Select options={STATUS_OPTIONS} style={{ width: '100%' }} placeholder="Publish status..." />
-            </Col>
-            <Col span={5}>
-              <Select options={SORT_OPTIONS} style={{ width: '100%' }} placeholder="Sort..." />
-            </Col>
-          </Row>
-        }
-      >
-        <List
-          dataSource={publications}
-          renderItem={publication => (
-            <List.Item
-              extra={
-                <Space>
-                  <Button>Details</Button>
-                  <Button>Edit</Button>
-                  <Button>Delete</Button>
-                </Space>
-              }
-            >
-              <List.Item.Meta
-                title="Publication"
-                description="Deskripsi"
-              />
-            </List.Item>
-          )}
-        />
-      </Layout.Admin>
+      <AdminGuard>
+        <Layout.Admin
+          applet={
+            <Row gutter={8}>
+              <Col span={5}>
+                <Input.Search placeholder='Search stories...' />
+              </Col>
+              <Col span={5}>
+                <Select options={STATUS_OPTIONS} style={{ width: '100%' }} placeholder="Publish status..." />
+              </Col>
+              <Col span={5}>
+                <Select options={SORT_OPTIONS} style={{ width: '100%' }} placeholder="Sort..." />
+              </Col>
+            </Row>
+          }
+        >
+          <List
+            dataSource={publications}
+            renderItem={publication => (
+              <List.Item
+                extra={
+                  <Space>
+                    <Button>Details</Button>
+                    <Button>Edit</Button>
+                    <Button>Delete</Button>
+                  </Space>
+                }
+              >
+                <List.Item.Meta
+                  title="Publication"
+                  description="Deskripsi"
+                />
+              </List.Item>
+            )}
+          />
+        </Layout.Admin>
+      </AdminGuard>
     </RouteGuard>
   )
 }

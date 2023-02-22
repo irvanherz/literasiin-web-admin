@@ -1,19 +1,19 @@
 import { Button, Drawer, Space } from 'antd'
 import { cloneElement, ReactElement, useEffect, useState } from 'react'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation } from 'react-query'
 import StoriesService from 'services/Stories'
 import CategoryOrderInput, { CategoryItem } from './CategoryOrderInput'
 
 type ReorderCategoriesButtonProps = {
   children: ReactElement
   categories: any[]
+   afterUpdated?: () => void
 }
 
-export default function ReorderCategoriesButton ({ children, categories }: ReorderCategoriesButtonProps) {
+export default function ReorderCategoriesButton ({ children, categories, afterUpdated }: ReorderCategoriesButtonProps) {
   const [open, setOpen] = useState(false)
   const [reorderedCategories, setReorderedCategories] = useState<CategoryItem[]>([])
   const orderSaver = useMutation(StoriesService.Categories.bulkUpdate)
-  const queryClient = useQueryClient()
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -27,7 +27,7 @@ export default function ReorderCategoriesButton ({ children, categories }: Reord
     orderSaver.mutate(payload, {
       onSuccess: async () => {
         handleClose()
-        await queryClient.invalidateQueries('stories.categories')
+        if (afterUpdated) afterUpdated()
       }
     })
   }

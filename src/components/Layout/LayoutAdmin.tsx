@@ -72,18 +72,21 @@ min-height: 100vh;
 `
 
 const LayoutBody = styled(Layout.Content)`
-    margin: 24px 16px;
-    .layout-breadcrumb {
-      padding: 12px 24px;
+  margin: 24px 16px;
+  .layout-breadcrumb {
+    padding: 12px 24px;
+  }
+  .layout-content {
+    min-height: 280px;
+    .layout-content-applet {
+      padding: 24px;
+      border-bottom: 1px;
     }
-    .layout-applet {
+    .layout-content-body {
       padding: 24px;
     }
-    .layout-content {
-      padding: 24px;
-      min-height: 280px;
-    }
-  `
+  }
+`
 
 type LayoutAdminProps = {
   children: ReactNode
@@ -97,7 +100,7 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
   const navigate = useNavigate()
   const [collapsed, setCollapsed] = useState(false)
   const {
-    token: { colorBgContainer }
+    token: { colorBgContainer, colorBorder }
   } = theme.useToken()
 
   const handleToggleCollapseMenu = () => setCollapsed(!collapsed)
@@ -200,8 +203,10 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
         <LayoutBody>
           <Space direction='vertical' style={{ width: '100%' }}>
             {!!breadcrumb && <div className='layout-breadcrumb' style={{ background: colorBgContainer }}><Breadcrumb routes={breadcrumb} itemRender={itemRender} /></div>}
-            {!!applet && <div className='layout-applet' style={{ background: colorBgContainer }}>{applet}</div>}
-            {!!children && <div className='layout-content' style={{ background: colorBgContainer }}>{children}</div>}
+            <div style={{ width: '100%', background: colorBgContainer }} className='layout-content'>
+              {!!applet && <div className='layout-content-applet' style={{ borderBottom: `1px solid ${colorBorder}` }}>{applet}</div>}
+              {!!children && <div className='layout-content-body'>{children}</div>}
+            </div>
           </Space>
         </LayoutBody>
       </Layout>

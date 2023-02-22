@@ -1,4 +1,5 @@
 import { Space, Tabs } from 'antd'
+import AdminGuard from 'components/AdminGuard'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
 import { useQuery } from 'react-query'
@@ -16,27 +17,29 @@ export default function ManageStoryDetails () {
 
   return (
     <RouteGuard require='authenticated'>
-      <Layout.Admin
-        breadcrumb={[
-          { breadcrumbName: 'Home', path: '/' },
-          { breadcrumbName: 'Stories', path: '/stories' },
-          { breadcrumbName: story?.title, path: `/stories/${story?.id}` }
-        ]}
-      >
-        <Space direction='vertical' style={{ width: '100%' }}>
-          <Tabs>
-            <Tabs.TabPane key="a" tab="Summary">
-              <StorySummaryTab story={story}/>
-            </Tabs.TabPane>
-            <Tabs.TabPane key="b" tab="Edit">
-              <StoryEditTab story={story} />
-            </Tabs.TabPane>
-            <Tabs.TabPane key="c" tab="Chapters">
-              <StoryChaptersTab story={story} />
-            </Tabs.TabPane>
-          </Tabs>
-        </Space>
-      </Layout.Admin>
+      <AdminGuard>
+        <Layout.Admin
+          breadcrumb={[
+            { breadcrumbName: 'Home', path: '/' },
+            { breadcrumbName: 'Stories', path: '/stories' },
+            { breadcrumbName: story?.title, path: `/stories/${story?.id}` }
+          ]}
+        >
+          <Space direction='vertical' style={{ width: '100%' }}>
+            <Tabs>
+              <Tabs.TabPane key="a" tab="Summary">
+                <StorySummaryTab story={story}/>
+              </Tabs.TabPane>
+              <Tabs.TabPane key="b" tab="Edit">
+                <StoryEditTab story={story} />
+              </Tabs.TabPane>
+              <Tabs.TabPane key="c" tab="Chapters">
+                <StoryChaptersTab story={story} />
+              </Tabs.TabPane>
+            </Tabs>
+          </Space>
+        </Layout.Admin>
+      </AdminGuard>
     </RouteGuard>
   )
 }

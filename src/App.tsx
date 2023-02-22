@@ -1,7 +1,9 @@
 import { ConfigProvider, theme } from 'antd'
 import ChapterEdit from 'pages/ChapterEdit'
 import ManageArticleCategories from 'pages/ManageArticleCategories'
+import ManageArticleCreate from 'pages/ManageArticleCreate'
 import ManageArticles from 'pages/ManageArticles'
+import ManageArticleUpdate from 'pages/ManageArticleUpdate'
 import ManagePublications from 'pages/ManagePublications'
 import ManageStories from 'pages/ManageStories'
 import ManageStoryCategories from 'pages/ManageStoryCategories'
@@ -53,6 +55,16 @@ const router = createBrowserRouter([
     id: '/articles',
     path: '/articles',
     element: <ManageArticles />
+  },
+  {
+    id: '/articles/create',
+    path: '/articles/create',
+    element: <ManageArticleCreate />
+  },
+  {
+    id: '/articles/:articleId/edit',
+    path: '/articles/:articleId/edit',
+    element: <ManageArticleUpdate />
   },
   {
     id: '/articles/categories',
