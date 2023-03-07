@@ -1,6 +1,6 @@
 import {
   BookOutlined,
-  HomeFilled, LeftOutlined, MessageOutlined, RightOutlined, ShoppingCartOutlined, UserOutlined
+  HomeFilled, LeftOutlined, RightOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
 import { Breadcrumb, BreadcrumbProps, Button, Layout, Menu, MenuProps, Space, theme } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
@@ -14,12 +14,6 @@ function UserMenu () {
   return auth.status === 'authenticated'
     ? (
       <Space>
-        <Link to='/cart'>
-          <Button shape='circle' icon={<ShoppingCartOutlined />} />
-        </Link>
-        <Link to='/chats'>
-          <Button shape='circle' icon={<MessageOutlined />} />
-        </Link>
         <ProfileMenu><Button shape='round' icon={<UserOutlined />}>Menu</Button></ProfileMenu>
       </Space>
       )
@@ -161,6 +155,12 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
           onClick: () => navigate('/articles/categories')
         }
       ]
+    },
+    {
+      key: 'configurations',
+      icon: <SettingOutlined />,
+      label: 'Configurations',
+      onClick: () => navigate('/configurations')
     }
   ]
 

@@ -12,6 +12,7 @@
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@uiw/react-textarea-code-editor": "^2.1.1",
     "antd": "^5.1.6",
     "antd-img-crop": "^4.6.0",
     "axios": "^1.2.6",
@@ -36,8 +37,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=4000 react-scripts start",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.local react-scripts start",
+    "build": "env-cmd -f .env.local react-scripts build",
+    "start:dev": "env-cmd -f .env.development react-scripts start",
+    "build:dev": "env-cmd -f .env.development react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -68,6 +71,7 @@
     "@types/use-deep-compare-effect": "^1.5.1",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",
+    "env-cmd": "^10.1.0",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard": "^17.0.0",

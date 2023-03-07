@@ -1,16 +1,17 @@
-import { Avatar, Button, Modal, Space } from 'antd'
+import { Button, Modal, Space } from 'antd'
+import ArticleImage from 'components/ArticleImage'
 import MediaPickerInput from 'components/MediaPicker/MediaPickerInput'
 import useCustomComponent from 'hooks/useCustomComponent'
-import { DEFAULT_PHOTO } from 'libs/variables'
+import { DEFAULT_IMAGE } from 'libs/variables'
 import { useState } from 'react'
 
-type PhotoInputProps = {
+type ArticleImageInputProps = {
   value?: any
   defaultValue?: any
   onChange?: (v: any) => void
 }
 
-export default function PhotoInput ({ value, defaultValue, onChange }: PhotoInputProps) {
+export default function ArticleImageInput ({ value, defaultValue, onChange }: ArticleImageInputProps) {
   const [open, setOpen] = useState(false)
   const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange })
   const md = computedValue?.meta?.objects?.find((object: any) => object.id === 'md')
@@ -32,7 +33,7 @@ export default function PhotoInput ({ value, defaultValue, onChange }: PhotoInpu
   return (
     <>
       <Space direction='vertical' style={{ width: '100%' }}>
-        <Avatar src={md?.url || DEFAULT_PHOTO} size={128}/>
+        <ArticleImage src={md?.url || DEFAULT_IMAGE} />
         <Button size='small' onClick={handleChange}>Change</Button>
       </Space>
 
@@ -43,9 +44,9 @@ export default function PhotoInput ({ value, defaultValue, onChange }: PhotoInpu
         onOk={handleConfirmSelect}
       >
         <MediaPickerInput
-          preset='photo'
-          cropProps={{ aspect: 1 }}
-          filters={{ type: 'image', tag: 'photo' }}
+          preset='article-image'
+          cropProps={{ aspect: 2 / 1 }}
+          filters={{ type: 'image', tag: 'article-image' }}
           value={selected}
           onChange={setSelected}
         />

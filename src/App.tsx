@@ -4,6 +4,9 @@ import ManageArticleCategories from 'pages/ManageArticleCategories'
 import ManageArticleCreate from 'pages/ManageArticleCreate'
 import ManageArticles from 'pages/ManageArticles'
 import ManageArticleUpdate from 'pages/ManageArticleUpdate'
+import ManageConfigurationCreate from 'pages/ManageConfigurationCreate'
+import ManageConfigurationEdit from 'pages/ManageConfigurationEdit'
+import ManageConfigurations from 'pages/ManageConfigurations'
 import ManagePublications from 'pages/ManagePublications'
 import ManageStories from 'pages/ManageStories'
 import ManageStoryCategories from 'pages/ManageStoryCategories'
@@ -20,6 +23,21 @@ const router = createBrowserRouter([
     id: '/',
     path: '/',
     element: <Home />
+  },
+  {
+    id: '/configurations',
+    path: '/configurations',
+    element: <ManageConfigurations />
+  },
+  {
+    id: '/configurations/create',
+    path: '/configurations/create',
+    element: <ManageConfigurationCreate />
+  },
+  {
+    id: '/configurations/:configId/edit',
+    path: '/configurations/:configId/edit',
+    element: <ManageConfigurationEdit />
   },
   {
     id: '/users',

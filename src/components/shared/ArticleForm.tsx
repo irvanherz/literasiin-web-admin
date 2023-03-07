@@ -1,6 +1,7 @@
 import { Form, Input } from 'antd'
 import RichTextInput from 'components/RichTextInput'
 import ArticleCategoryInput from './ArticleCategoryInput'
+import ArticleImageInput from './ArticleImageInput'
 import UserIdInput from './UserIdInput'
 
 export default function ArticleForm () {
@@ -14,11 +15,18 @@ export default function ArticleForm () {
         <UserIdInput />
       </Form.Item>
       <Form.Item
+        label="Image"
+        name='image'
+        wrapperCol={{ style: { maxWidth: 360 } }}
+      >
+        <ArticleImageInput />
+      </Form.Item>
+      <Form.Item
         label="Title"
         name='title'
         rules={[{ required: true, message: 'Title is required' }]}
       >
-        <Input type="email" placeholder="Title..." maxLength={255} />
+        <Input placeholder="Title..." maxLength={255} />
       </Form.Item>
       <Form.Item
         label="Description"

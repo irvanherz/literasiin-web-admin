@@ -5,7 +5,7 @@ import MediaService from 'services/Media'
 
 type MediaPickerUploaderProps = {
   afterUploadDone?: UploadProps['onChange']
-  preset?: 'photo' | 'story-cover'
+  preset?: 'photo' | 'story-cover' | 'article-image'
   cropProps?: Omit<ImgCropProps, 'children'>
 }
 export default function MediaPickerUploader ({ afterUploadDone, cropProps, preset = 'photo' }: MediaPickerUploaderProps) {
