@@ -1,5 +1,4 @@
 import { Col, Empty, Image, Row, Space } from 'antd'
-import { ImgCropProps } from 'antd-img-crop'
 import useCustomComponent from 'hooks/useCustomComponent'
 import { DEFAULT_IMAGE } from 'libs/variables'
 import { DOMAttributes, useState } from 'react'
@@ -12,6 +11,7 @@ import MediaPickerUploader from './MediaPickerUploader'
 const MediaWrapper = styled.div`
 width: 100%;
 position: relative;
+line-height: 0;
 &>img {
   width: 100%;
 }
@@ -68,11 +68,10 @@ type MediaPickerProps = {
   value?: any
   defaultValue?: any
   onChange?: (v: any) => void
-  preset?: 'photo' | 'story-cover' | 'article-image'
-  cropProps?: Omit<ImgCropProps, 'children'>
+  preset?: 'photo' | 'story-cover' | 'article-image' | 'asset'
 }
 
-export default function MediaPickerInput ({ filters = {}, value, defaultValue, onChange, preset, cropProps }: MediaPickerProps) {
+export default function MediaPickerInput ({ filters = {}, value, defaultValue, onChange, preset }: MediaPickerProps) {
   const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange })
   const selectedMediaId = computedValue?.id
 
@@ -104,7 +103,7 @@ export default function MediaPickerInput ({ filters = {}, value, defaultValue, o
 
   return (
     <Space direction="vertical" style={{ width: '100%' }}>
-      <MediaPickerUploader afterUploadDone={handleAfterUploadDone} cropProps={cropProps} preset={preset} />
+      <MediaPickerUploader afterUploadDone={handleAfterUploadDone} preset={preset} />
       <InfiniteScroll
         dataLength={numMediaLoaded}
         next={fetchNextPage}
@@ -127,9 +126,8 @@ export default function MediaPickerInput ({ filters = {}, value, defaultValue, o
             ))
           })}
         </Row>
-
       </InfiniteScroll>
-      {!!data?.pages?.length && (
+      {!data?.pages?.length && (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
     </Space>

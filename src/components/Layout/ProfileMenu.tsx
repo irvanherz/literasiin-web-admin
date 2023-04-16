@@ -1,5 +1,7 @@
 import { Avatar, Drawer, Menu, Space } from 'antd'
 import useAuthContext from 'hooks/useAuthContext'
+import useCurrentUser from 'hooks/useCurrentUser'
+import { DEFAULT_PHOTO } from 'libs/variables'
 import { cloneElement, ReactElement, useState } from 'react'
 import styled from 'styled-components'
 
@@ -12,6 +14,7 @@ type ProfileMenuProps = {
 }
 export default function ProfileMenu ({ children }: ProfileMenuProps) {
   const auth = useAuthContext()
+  const currentUser = useCurrentUser()
   const [open, setOpen] = useState(false)
 
   const handleClick = () => {
@@ -21,6 +24,9 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
   const handleSignout = () => {
     auth.setToken(null, null)
   }
+
+  const photoMd = (currentUser?.photo?.meta?.objects || []).find((o: any) => o.id === 'md')
+  const photoUrl = photoMd?.url || DEFAULT_PHOTO
 
   return (
     <>
@@ -32,9 +38,9 @@ export default function ProfileMenu ({ children }: ProfileMenuProps) {
         <Space direction='vertical' style={{ width: '100%' }}>
           <div style={{ textAlign: 'center' }}>
             <Space direction='vertical' style={{ width: '100%' }}>
-              <Avatar size={64} shape='square' />
-              <div style={{ fontWeight: 800 }}>Nama</div>
-              <div>@nama</div>
+              <Avatar size={64} shape='square' src={photoUrl} />
+              <div style={{ fontWeight: 800 }}>{currentUser?.fullName}</div>
+              <div>@{currentUser?.username}</div>
             </Space>
 
           </div>

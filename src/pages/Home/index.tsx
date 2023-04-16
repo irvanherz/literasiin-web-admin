@@ -7,7 +7,12 @@ export default function Home () {
   return (
     <RouteGuard require='authenticated'>
       <AdminGuard>
-        <Layout.Admin>
+        <Layout.Admin
+          menuProps={{ selectedKeys: ['home'] }}
+          breadcrumb={[
+            { title: 'Home', path: '/' }
+          ]}
+        >
           <Space direction='vertical' style={{ width: '100%' }}>
             <div>Dashboard</div>
           </Space>

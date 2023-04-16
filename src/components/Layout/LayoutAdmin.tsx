@@ -1,8 +1,9 @@
 import {
   BookOutlined,
-  HomeFilled, LeftOutlined, RightOutlined, SettingOutlined, UserOutlined
+  FileImageOutlined, HomeFilled, LeftOutlined, RightOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
-import { Breadcrumb, BreadcrumbProps, Button, Layout, Menu, MenuProps, Space, theme } from 'antd'
+import { Breadcrumb, Button, Layout, Menu, MenuProps, Space, theme } from 'antd'
+import { NewBreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb'
 import useAuthContext from 'hooks/useAuthContext'
 import { ReactNode, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -26,6 +27,9 @@ function UserMenu () {
 
 const StyledLayout = styled(Layout)`
 min-height: 100vh;
+.ant-layout-sider {
+
+}
 .standard-layout-menu {
   display: flex;
   flex-direction: column;
@@ -86,7 +90,7 @@ type LayoutAdminProps = {
   children: ReactNode
   headerExtra?: ReactNode
   applet?: ReactNode
-  breadcrumb?: BreadcrumbProps['routes']
+  breadcrumb?: NewBreadcrumbProps['items']
   menuProps?: MenuProps
 }
 
@@ -113,11 +117,17 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
       onClick: () => navigate('/users')
     },
     {
-      key: 'publications',
-      icon: <BookOutlined />,
-      label: 'Publications',
-      onClick: () => navigate('/publications')
+      key: 'media',
+      icon: <FileImageOutlined />,
+      label: 'Media',
+      onClick: () => navigate('/media')
     },
+    // {
+    //   key: 'publications',
+    //   icon: <BookOutlined />,
+    //   label: 'Publications',
+    //   onClick: () => navigate('/publications')
+    // },
     {
       key: 'stories',
       icon: <BookOutlined />,
@@ -157,6 +167,25 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
       ]
     },
     {
+      key: 'kbs',
+      icon: <BookOutlined />,
+      label: 'Knowledge Bases',
+      children: [
+        {
+          key: 'kbs.items',
+          icon: <BookOutlined />,
+          label: 'Knowledge Bases',
+          onClick: () => navigate('/kbs')
+        },
+        {
+          key: 'kbs.categories',
+          icon: <BookOutlined />,
+          label: 'Categories',
+          onClick: () => navigate('/kbs/categories')
+        }
+      ]
+    },
+    {
       key: 'configurations',
       icon: <SettingOutlined />,
       label: 'Configurations',
@@ -164,20 +193,13 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
     }
   ]
 
-  const itemRender: BreadcrumbProps['itemRender'] = (route, params, routes, paths) => {
-    const last = routes.indexOf(route) === routes.length - 1
-    return last
-      ? (
-        <span>{route.breadcrumbName}</span>
-        )
-      : (
-        <Link to={'/' + paths.join('/')}>{route.breadcrumbName}</Link>
-        )
+  const itemRender: NewBreadcrumbProps['itemRender'] = (route: any, params, routes, paths) => {
+    return <Link to={paths.join('/')}>{route.title}</Link>
   }
 
   return (
     <StyledLayout>
-      <Layout.Sider trigger={null} collapsible collapsed={collapsed}>
+      <Layout.Sider width={300} trigger={null} collapsible collapsed={collapsed}>
         <div className='standard-layout-menu'>
           <div className='standard-layout-menu-1'>
             <Menu
@@ -202,7 +224,7 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
         </Layout.Header>
         <LayoutBody>
           <Space direction='vertical' style={{ width: '100%' }}>
-            {!!breadcrumb && <div className='layout-breadcrumb' style={{ background: colorBgContainer }}><Breadcrumb routes={breadcrumb} itemRender={itemRender} /></div>}
+            {!!breadcrumb && <div className='layout-breadcrumb' style={{ background: colorBgContainer }}><Breadcrumb items={breadcrumb} itemRender={itemRender} /></div>}
             <div style={{ width: '100%', background: colorBgContainer }} className='layout-content'>
               {!!applet && <div className='layout-content-applet' style={{ borderBottom: `1px solid ${colorBorder}` }}>{applet}</div>}
               {!!children && <div className='layout-content-body'>{children}</div>}

@@ -1,63 +1,53 @@
-import { Input, List, Modal } from 'antd'
+import { Select, SelectProps } from 'antd'
 import useCustomComponent from 'hooks/useCustomComponent'
-import { useState } from 'react'
+import { debounce } from 'lodash'
+import { useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import UsersService from 'services/Users'
 
-type UserInputProps = {
-  value?: number
-  defaultValue?: number
-  onChange?: (v: number) => void
-}
-export default function UserIdInput ({ value, defaultValue, onChange }: UserInputProps) {
-  const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange })
+export type UserIdInputProps = SelectProps
+export default function UserIdInput ({ value, defaultValue, onChange, ...otherProps }:UserIdInputProps) {
+  const [computedValue, triggerValueChange] = useCustomComponent({ value, defaultValue, onChange: onChange as any })
   const [search, setSearch] = useState('')
-  const userId = computedValue || 0
-  const userQuery = useQuery(`users[${userId}]`, () => UsersService.findById(userId), { enabled: !!userId })
+  const userQuery = useQuery(`users[${computedValue}]`, () => UsersService.findById(computedValue), { enabled: !!computedValue })
   const usersQuery = useQuery(`users[search:${search}]`, () => UsersService.findMany({ search }))
-  const [open, setOpen] = useState(false)
+  const users = usersQuery?.data?.data || []
+  const user = userQuery?.data?.data
 
-  const currentUser = userQuery?.data?.data
+  const setSearchDebounced = debounce(e => setSearch(e), 1000)
 
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+  const options = useMemo(() => {
+    const usersById: any = {}
+    if (user) {
+      usersById[user.id] = user
+    }
+    users.forEach((u: any) => {
+      usersById[u.id] = u
+    })
+    return Object.keys(usersById).map(id => {
+      return {
+        key: usersById[id].id,
+        value: usersById[id].id,
+        label: usersById[id].fullName
+      }
+    })
+  }, [user, users])
 
-  const handleSelectUser = (user: any) => {
-    triggerValueChange(user?.id || 0)
-    handleClose()
-  }
-
-  const users = usersQuery.data?.data || []
   return (
-    <>
-      <Input
-        disabled={userQuery.isLoading}
-        value={currentUser?.fullName || '...'}
-        readOnly
-        placeholder='Select user'
-        onClick={handleOpen}
-      />
-      <Modal
-        centered
-        open={open}
-        title="Select User"
-        onCancel={handleClose}
-        footer={null}
-      >
-        <List
-          header={<Input.Search onSearch={q => setSearch(q)} allowClear placeholder='Search...' />}
-          dataSource={users}
-          renderItem={(user: any) => (
-            <List.Item style={{ cursor: 'pointer' }} onClick={() => handleSelectUser(user)}>
-              <List.Item.Meta
-                title={user.fullName}
-                description={user.username}
-              />
-            </List.Item>
-          )}
-      />
-      </Modal>
-    </>
-
+    <Select
+      showSearch
+      allowClear
+      value={+computedValue || undefined}
+      placeholder="Find user..."
+      defaultActiveFirstOption={false}
+      showArrow={false}
+      filterOption={false}
+      onSearch={setSearchDebounced}
+      onChange={triggerValueChange}
+      notFoundContent={null}
+      options={options}
+      style={{ width: '100%' }}
+      {...otherProps}
+    />
   )
 }

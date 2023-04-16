@@ -1,4 +1,5 @@
-import { DetailedHTMLProps, ImgHTMLAttributes } from 'react'
+import { DEFAULT_IMAGE } from 'libs/variables'
+import { DetailedHTMLProps, ImgHTMLAttributes, useMemo } from 'react'
 import styled, { CSSProperties } from 'styled-components'
 
 const CoverWrapper = styled.div`
@@ -16,13 +17,21 @@ img {
 `
 
 type StoryCoverProps = DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement> & {
+  story?: any
   containerStyle?: CSSProperties
   containerClassName?: string
 }
-export default function StoryCover ({ containerStyle, containerClassName, ...props }: StoryCoverProps) {
+export default function StoryCover ({ story, containerStyle, containerClassName, ...props }: StoryCoverProps) {
+  const src = useMemo(() => {
+    const cover = story?.cover
+    const objects: any[] = cover?.meta?.objects || []
+    const md = objects.find(object => object.id === 'md')
+    return md?.url || DEFAULT_IMAGE
+  }, [story])
+
   return (
     <CoverWrapper style={containerStyle} className={containerClassName}>
-      <img {...props}/>
+      <img src={src} {...props}/>
     </CoverWrapper>
   )
 }

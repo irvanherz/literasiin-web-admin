@@ -21,15 +21,12 @@ const reorder = (list: CategoryItem[], startIndex: number, endIndex: number): Ca
   return result
 }
 
-const grid = 8
-
 const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDraggingStyle | undefined): CSSProperties => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
+  padding: 16,
+  margin: '0 0 8px 0',
+  borderRadius: 8,
   background: isDragging ? 'lightgreen' : 'grey',
 
   // styles we need to apply on draggables
@@ -37,9 +34,7 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
 })
 
 const getListStyle = (isDraggingOver: boolean): CSSProperties => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250
+  padding: 8
 })
 
 const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {

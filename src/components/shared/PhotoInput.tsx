@@ -41,10 +41,10 @@ export default function PhotoInput ({ value, defaultValue, onChange }: PhotoInpu
         onCancel={handleClose}
         okText="Select"
         onOk={handleConfirmSelect}
+        width={700}
       >
         <MediaPickerInput
           preset='photo'
-          cropProps={{ aspect: 1 }}
           filters={{ type: 'image', tag: 'photo' }}
           value={selected}
           onChange={setSelected}

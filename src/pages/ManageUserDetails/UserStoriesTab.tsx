@@ -6,7 +6,7 @@ type UserStoriesTabProps = {
   user: any
 }
 export default function UserStoriesTab ({ user }: UserStoriesTabProps) {
-  const userId = user.id
+  const userId = user?.id
   const { data } = useQuery(`user[${userId}].stories`, () => StoriesService.findMany({ userId }), { enabled: !!userId })
   const stories: any[] = data?.data || []
 

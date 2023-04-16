@@ -1,47 +1,49 @@
-import { Button, Col, Form, message, Row } from 'antd'
-import { useEffect } from 'react'
+import { Button, Form, message } from 'antd'
+import StoryForm from 'components/shared/StoryForm'
+import { useEffect, useMemo } from 'react'
 import { useMutation } from 'react-query'
 import StoriesService from 'services/Stories'
-import EditableStoryCoverMedia from './EditableStoryCoverMedia'
-import StoryForm from './StoryForm'
 
 type StoryEditTabProps = {
   story: any
+  afterUpdated?: () => void
 }
-
-export default function StoryEditTab ({ story }:StoryEditTabProps) {
-  const storyId = story.id
+export default function StoryEditTab ({ story, afterUpdated }: StoryEditTabProps) {
+  const storyId = story?.id
   const [form] = Form.useForm()
-  const initialValues = story
-  const updater = useMutation(payload => StoriesService.updateById(storyId, payload))
+  const updater = useMutation(data => StoriesService.updateById(storyId, data))
 
-  useEffect(() => {
-    if (story) form.resetFields()
+  const initialValues = useMemo(() => {
+    const result = { ...story }
+    return result
   }, [story])
 
-  const handleFinish = (values: any) => {
-    updater.mutate(values, {
-      onError: (err:any) => {
-        message.error(err?.message)
+  useEffect(() => {
+    form.resetFields()
+  }, [story])
+
+  const handleSubmit = (payload: any) => {
+    payload.coverId = payload?.cover?.id
+    delete payload.cover
+
+    updater.mutate(payload, {
+      onSuccess: () => {
+        afterUpdated && afterUpdated()
+        message.success('Story updated')
+      },
+      onError: (err: any) => {
+        message.error(err?.message || 'Something wrong')
       }
     })
   }
 
-  const handleFinishFailed = () => {
-    message.error('Check all fields and then try again')
+  const handleValidationError = () => {
+    message.error('Validation error')
   }
-
   return (
-    <Row gutter={[16, 16]}>
-      <Col xs={24} sm={12} md={8} lg={6}>
-        <EditableStoryCoverMedia story={story} />
-      </Col>
-      <Col xs={24} sm={12} md={16} lg={18}>
-        <Form form={form} onFinish={handleFinish} onFinishFailed={handleFinishFailed} initialValues={initialValues} labelCol={{ span: 24 }} wrapperCol={{ span: 24 }}>
-          <StoryForm />
-          <Button loading={updater.isLoading} onClick={form.submit}>Save</Button>
-        </Form>
-      </Col>
-    </Row>
+    <Form initialValues={initialValues} form={form} labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onFinish={handleSubmit} onFinishFailed={handleValidationError}>
+      <StoryForm />
+      <Button type='primary' loading={updater.isLoading} onClick={form.submit}>Update</Button>
+    </Form>
   )
 }

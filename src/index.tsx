@@ -12,8 +12,25 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { getAnalytics } from 'firebase/analytics'
 import { initializeApp } from 'firebase/app'
+import { Quill } from 'react-quill'
 
 dayjs.extend(relativeTime)
+const BubbleTheme = Quill.import('themes/bubble')
+
+class ExtendBubbleTheme extends BubbleTheme {
+  constructor (quill: any, options: any) {
+    super(quill, options)
+
+    quill.on('selection-change', (range: any) => {
+      if (range) {
+        quill.theme.tooltip.show()
+        quill.theme.tooltip.position(quill.getBounds(range))
+      }
+    })
+  }
+}
+
+Quill.register('themes/bubble', ExtendBubbleTheme)
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

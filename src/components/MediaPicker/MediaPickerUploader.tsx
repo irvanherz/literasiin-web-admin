@@ -1,14 +1,21 @@
 import { InboxOutlined } from '@ant-design/icons'
 import { message, notification, Progress, Upload, UploadProps } from 'antd'
-import ImgCrop, { ImgCropProps } from 'antd-img-crop'
+import ImgCrop from 'antd-img-crop'
 import MediaService from 'services/Media'
+
+const CROP_PRESETS = {
+  photo: { aspect: 1 },
+  asset: undefined,
+  'story-cover': { aspect: 1 / 1.5 },
+  'article-image': { aspect: 2 / 1 }
+}
 
 type MediaPickerUploaderProps = {
   afterUploadDone?: UploadProps['onChange']
-  preset?: 'photo' | 'story-cover' | 'article-image'
-  cropProps?: Omit<ImgCropProps, 'children'>
+  preset?: 'photo' | 'story-cover' | 'article-image' | 'asset'
+  additionalData?: any
 }
-export default function MediaPickerUploader ({ afterUploadDone, cropProps, preset = 'photo' }: MediaPickerUploaderProps) {
+export default function MediaPickerUploader ({ afterUploadDone, preset = 'photo', additionalData }: MediaPickerUploaderProps) {
   const handleChange: UploadProps['onChange'] = (info) => {
     const { status } = info.file
     if (status === 'uploading') {
@@ -46,24 +53,28 @@ export default function MediaPickerUploader ({ afterUploadDone, cropProps, prese
     return isJpgOrPng && isLt2M
   }
 
-  return (
-    <ImgCrop {...cropProps}>
-      <Upload.Dragger
-        {...(MediaService.generateAntdUploadProps())}
-        data={{ preset }}
-        showUploadList={false}
-        multiple={false}
-        onChange={handleChange}
-        beforeUpload={beforeUpload}
-    >
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined />
-        </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        <p className="ant-upload-hint">
-          Strictly prohibit from uploading company data or other band files
-        </p>
-      </Upload.Dragger>
-    </ImgCrop>
+  const cropPreset = CROP_PRESETS[preset]
+
+  const uploader = (
+    <Upload.Dragger
+      {...(MediaService.generateAntdUploadProps())}
+      data={{ preset, ...additionalData }}
+      showUploadList={false}
+      multiple={false}
+      onChange={handleChange}
+      beforeUpload={beforeUpload}
+  >
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      <p className="ant-upload-text">Click or drag file to this area to upload</p>
+      <p className="ant-upload-hint">
+        Strictly prohibit from uploading company data or other band files
+      </p>
+    </Upload.Dragger>
   )
+
+  return cropPreset
+    ? <ImgCrop {...cropPreset}>{uploader}</ImgCrop>
+    : uploader
 }

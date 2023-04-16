@@ -1,5 +1,4 @@
 import { Form, message, Modal } from 'antd'
-import { useForm } from 'antd/es/form/Form'
 import ArticleCategoryForm from 'components/shared/ArticleCategoryForm'
 import { cloneElement, ReactElement, useState } from 'react'
 import { useMutation } from 'react-query'
@@ -13,7 +12,7 @@ type CreateArticleButtonProps = {
 export default function ArticleCategoryCreateButton ({ children, afterCreated }: CreateArticleButtonProps) {
   const creator = useMutation(payload => ArticlesService.Categories.create(payload))
   const [open, setOpen] = useState(false)
-  const [form] = useForm()
+  const [form] = Form.useForm()
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)

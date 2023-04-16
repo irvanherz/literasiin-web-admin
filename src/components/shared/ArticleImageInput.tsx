@@ -42,10 +42,10 @@ export default function ArticleImageInput ({ value, defaultValue, onChange }: Ar
         onCancel={handleClose}
         okText="Select"
         onOk={handleConfirmSelect}
+        width={700}
       >
         <MediaPickerInput
           preset='article-image'
-          cropProps={{ aspect: 2 / 1 }}
           filters={{ type: 'image', tag: 'article-image' }}
           value={selected}
           onChange={setSelected}

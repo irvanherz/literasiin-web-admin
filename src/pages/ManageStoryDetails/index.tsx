@@ -1,43 +1,50 @@
-import { Space, Tabs } from 'antd'
+import { Tabs } from 'antd'
 import AdminGuard from 'components/AdminGuard'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
+import { titleCase } from 'libs/common'
 import { useQuery } from 'react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import StoriesService from 'services/Stories'
 import StoryChaptersTab from './StoryChaptersTab'
+import StoryDetailsTab from './StoryDetailsTab'
 import StoryEditTab from './StoryEditTab'
-import StorySummaryTab from './StorySummaryTab'
 
 export default function ManageStoryDetails () {
   const params = useParams()
-  const storyId = +(params?.id || 0)
-  const { data } = useQuery(`story[${storyId}]`, () => StoriesService.findById(storyId))
+  const navigate = useNavigate()
+  const storyId = +(params?.storyId || 0)
+  const sectionId = params?.sectionId || 'details'
+  const { data, refetch } = useQuery(`stories[${storyId}]`, () => StoriesService.findById(storyId))
   const story: any = data?.data
+
+  const handleChangeSection = (s: string) => {
+    navigate(`/stories/${storyId}/${s}`, { replace: true })
+  }
 
   return (
     <RouteGuard require='authenticated'>
       <AdminGuard>
         <Layout.Admin
+          menuProps={{ defaultOpenKeys: ['stories'], selectedKeys: ['stories.items'] }}
           breadcrumb={[
-            { breadcrumbName: 'Home', path: '/' },
-            { breadcrumbName: 'Stories', path: '/stories' },
-            { breadcrumbName: story?.title, path: `/stories/${story?.id}` }
+            { title: 'Home', path: '/' },
+            { title: 'Stories', path: '/stories' },
+            { title: story?.title, path: `/${story?.id}` },
+            { title: titleCase(sectionId || ''), path: `/${sectionId}` }
           ]}
         >
-          <Space direction='vertical' style={{ width: '100%' }}>
-            <Tabs>
-              <Tabs.TabPane key="a" tab="Summary">
-                <StorySummaryTab story={story}/>
-              </Tabs.TabPane>
-              <Tabs.TabPane key="b" tab="Edit">
-                <StoryEditTab story={story} />
-              </Tabs.TabPane>
-              <Tabs.TabPane key="c" tab="Chapters">
-                <StoryChaptersTab story={story} />
-              </Tabs.TabPane>
-            </Tabs>
-          </Space>
+          <Tabs activeKey={sectionId} onChange={handleChangeSection}>
+            <Tabs.TabPane key='details' tab='Details'>
+              <StoryDetailsTab story={story} />
+            </Tabs.TabPane>
+            <Tabs.TabPane key='edit' tab='Edit'>
+              <StoryEditTab story={story} afterUpdated={refetch} />
+            </Tabs.TabPane>
+            <Tabs.TabPane key='chapters' tab='Chapters'>
+              <StoryChaptersTab story={story} />
+            </Tabs.TabPane>
+          </Tabs>
         </Layout.Admin>
       </AdminGuard>
     </RouteGuard>

@@ -37,10 +37,11 @@ export default function ManageConfigurationCreate () {
     <RouteGuard require='authenticated'>
       <AdminGuard>
         <Layout.Admin
+          menuProps={{ selectedKeys: ['configurations'] }}
           breadcrumb={[
-            { breadcrumbName: 'Home', path: '/' },
-            { breadcrumbName: 'Configurations', path: '/configurations' },
-            { breadcrumbName: 'Create Configuration', path: '/configurations/create}' }
+            { title: 'Home', path: '/' },
+            { title: 'Configurations', path: '/configurations' },
+            { title: 'Create Configuration', path: '/configurations/create}' }
           ]}
         >
           <Space direction='vertical' style={{ width: '100%' }}>

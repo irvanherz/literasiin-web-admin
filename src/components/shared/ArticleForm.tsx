@@ -1,5 +1,5 @@
-import { Form, Input } from 'antd'
-import RichTextInput from 'components/RichTextInput'
+import { Form, Input, Select } from 'antd'
+import ReactQuill from 'react-quill'
 import ArticleCategoryInput from './ArticleCategoryInput'
 import ArticleImageInput from './ArticleImageInput'
 import UserIdInput from './UserIdInput'
@@ -47,7 +47,14 @@ export default function ArticleForm () {
         name='content'
         rules={[{ required: true, message: 'Content is required' }]}
       >
-        <RichTextInput placeholder='Write content here...' />
+        <ReactQuill theme='bubble' placeholder='Write content here...'/>
+      </Form.Item>
+      <Form.Item
+        label="Status"
+        name='status'
+        rules={[{ required: true, message: 'Description is required' }]}
+      >
+        <Select options={[{ value: 'draft', label: 'Draft' }, { value: 'published', label: 'Published' }]} />
       </Form.Item>
     </Form.Provider>
   )

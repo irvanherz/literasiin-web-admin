@@ -17,8 +17,12 @@ export default function ManageArticleUpdate () {
   const articleQuery = useQuery(`articles[${articleId}]`, () => ArticlesService.findById(articleId), { enabled: !!articleId })
   const article = articleQuery.data?.data
 
-  const handleFinish = (values: any) => {
-    updater.mutate(values, {
+  const handleFinish = (payload: any) => {
+    if (payload.image) {
+      payload.imageId = payload.image.id
+    }
+    delete payload.image
+    updater.mutate(payload, {
       onSuccess: () => {
         message.success('Article updated')
         navigate('/articles')
@@ -44,10 +48,10 @@ export default function ManageArticleUpdate () {
       <AdminGuard>
         <Layout.Admin
           breadcrumb={[
-            { breadcrumbName: 'Home', path: '/' },
-            { breadcrumbName: 'Articles', path: '/articles' },
-            { breadcrumbName: article?.title || 'Untitled', path: `/articles/${articleId}` },
-            { breadcrumbName: 'Edit', path: `/articles/${articleId}/edit` }
+            { title: 'Home', path: '/' },
+            { title: 'Articles', path: '/articles' },
+            { title: article?.title || 'Untitled', path: `/articles/${articleId}` },
+            { title: 'Edit', path: `/articles/${articleId}/edit` }
           ]}
         >
           <Space direction='vertical' style={{ width: '100%' }}>

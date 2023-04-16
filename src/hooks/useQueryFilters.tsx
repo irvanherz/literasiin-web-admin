@@ -43,7 +43,8 @@ export default function useQueryFilters (schema: Record<string, FilterConfig>) {
   const refilter = (params: Record<string, string>) => {
     const filters = { ...sanitizedFilters, ...params }
     for (const key in schema) {
-      if (filters[key] === schema[key].default) {
+      // eslint-disable-next-line eqeqeq
+      if (filters[key] == schema[key].default) {
         delete filters[key]
       }
     }

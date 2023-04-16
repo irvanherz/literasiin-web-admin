@@ -1,8 +1,8 @@
 import { UserOutlined } from '@ant-design/icons'
 import { Button, Dropdown, List, MenuProps, Space } from 'antd'
 import StoryCover from 'components/StoryCover'
+import dayjs from 'dayjs'
 import { DEFAULT_IMAGE } from 'libs/variables'
-import moment from 'moment-timezone'
 import { Link } from 'react-router-dom'
 
 const items: MenuProps['items'] = [
@@ -36,7 +36,7 @@ type StoryListItemProps = {
 }
 
 export default function StoryListItem ({ story }: StoryListItemProps) {
-  const lastUpdateTime = moment(story.updatedAt).format('LLLL')
+  const lastUpdateTime = dayjs(story.updatedAt).fromNow()
 
   return (
     <List.Item

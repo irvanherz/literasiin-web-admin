@@ -2,15 +2,15 @@ import { Button, Form, message, Space } from 'antd'
 import AdminGuard from 'components/AdminGuard'
 import Layout from 'components/Layout'
 import RouteGuard from 'components/RouteGuard'
-import ArticleForm from 'components/shared/ArticleForm'
+import KbForm from 'components/shared/KbForm'
 import { useMutation } from 'react-query'
 import { useNavigate } from 'react-router-dom'
-import ArticlesService from 'services/Articles'
+import KbsService from 'services/Kbs'
 
-export default function ManageArticleCreate () {
+export default function ManageKbCreate () {
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const creator = useMutation(payload => ArticlesService.create(payload))
+  const creator = useMutation(payload => KbsService.create(payload))
 
   const handleFinish = (values: any) => {
     console.log(values)
@@ -20,8 +20,8 @@ export default function ManageArticleCreate () {
     delete payload.image
     creator.mutate(payload, {
       onSuccess: () => {
-        message.success('Article created')
-        navigate('/articles')
+        message.success('Kb created')
+        navigate('/kbs')
       },
       onError: (err: any) => {
         message.error(err?.message)
@@ -37,15 +37,16 @@ export default function ManageArticleCreate () {
     <RouteGuard require='authenticated'>
       <AdminGuard>
         <Layout.Admin
+          menuProps={{ defaultOpenKeys: ['kbs'], selectedKeys: ['kbs.create'] }}
           breadcrumb={[
-            { breadcrumbName: 'Home', path: '/' },
-            { breadcrumbName: 'Articles', path: '/articles' },
-            { breadcrumbName: 'Create Article', path: '/articles/create}' }
+            { title: 'Home', path: '/' },
+            { title: 'Knowledge Bases', path: '/kbs' },
+            { title: 'Create', path: '/create}' }
           ]}
         >
           <Space direction='vertical' style={{ width: '100%' }}>
             <Form form={form} labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} onFinish={handleFinish} onFinishFailed={handleFinishFailed}>
-              <ArticleForm />
+              <KbForm />
             </Form>
             <Button type='primary' onClick={form.submit} loading={creator.isLoading}>Submit</Button>
           </Space>

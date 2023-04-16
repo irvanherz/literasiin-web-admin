@@ -17,8 +17,9 @@ export default function AdminGuard ({ children }:AdminGuardProps) {
 
   if (currentUser.status !== 'success') {
     return null
-  } else if (currentUser.data?.role === 'admin') return children
-  else {
+  } else if (currentUser.data?.role === 'admin') {
+    return children
+  } else {
     return (
       <Result
         status='error'

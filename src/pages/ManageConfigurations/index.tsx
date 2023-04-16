@@ -80,13 +80,13 @@ export default function ManageConfigurations () {
     <RouteGuard require='authenticated'>
       <AdminGuard>
         <Layout.Admin
-          menuProps={{ defaultOpenKeys: ['configurations'], selectedKeys: ['configurations.items'] }}
+          menuProps={{ selectedKeys: ['configurations'] }}
           applet={
             <Row gutter={8}>
               <Col span={5}>
                 <Space direction='vertical' style={{ width: '100%' }}>
                   <Typography.Text>Search</Typography.Text>
-                  <Input.Search defaultValue={filters.search} onSearch={q => refilter({ search: q })} placeholder='Search configuration...' />
+                  <Input.Search allowClear defaultValue={filters.search} onSearch={q => refilter({ search: q })} placeholder='Search configuration...' />
                 </Space>
               </Col>
               <Col span={5}>

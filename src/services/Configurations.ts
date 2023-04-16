@@ -32,6 +32,15 @@ export default class ConfigurationsService {
     }
   }
 
+  static async findByName (name: string) {
+    try {
+      const resp = await axiosInstance.get(`${BASEURL}/configurations/name/${name}`)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
+
   static async updateById (id: number, payload: any) {
     try {
       const resp = await axiosInstance.patch(`${BASEURL}/configurations/${id}`, payload)

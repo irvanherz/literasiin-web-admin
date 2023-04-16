@@ -1,7 +1,7 @@
 import { Button, Form, message } from 'antd'
 import UserForm from 'components/shared/UserForm'
 import dayjs from 'dayjs'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useMutation } from 'react-query'
 import UsersService from 'services/Users'
 
@@ -10,7 +10,7 @@ type UserEditTabProps = {
   afterUpdated?: () => void
 }
 export default function UserEditTab ({ user, afterUpdated }: UserEditTabProps) {
-  const userId = user.id
+  const userId = user?.id
   const [form] = Form.useForm()
   const updater = useMutation(data => UsersService.updateById(userId, data))
 
@@ -18,6 +18,10 @@ export default function UserEditTab ({ user, afterUpdated }: UserEditTabProps) {
     const result = { ...user }
     result.dob = user?.dob ? dayjs(user.dob) : undefined
     return result
+  }, [user])
+
+  useEffect(() => {
+    form.resetFields()
   }, [user])
 
   const handleSubmit = (values: any) => {
