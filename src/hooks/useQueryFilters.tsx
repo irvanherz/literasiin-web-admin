@@ -28,7 +28,7 @@ export default function useQueryFilters (schema: Record<string, FilterConfig>) {
   const transformedFilters = useMemo(() => {
     let result: any = {}
     for (const key in schema) {
-      if (!sanitizedFilters[key]) continue
+      // if (sanitizedFilters[key]) continue
       if (schema[key].translate) {
         const translator = schema[key].translate
         const translated = translator?.(sanitizedFilters[key])

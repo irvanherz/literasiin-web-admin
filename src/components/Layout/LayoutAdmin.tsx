@@ -1,6 +1,6 @@
 import {
   BookOutlined,
-  FileImageOutlined, HomeFilled, LeftOutlined, RightOutlined, SettingOutlined, UserOutlined
+  FileImageOutlined, HomeFilled, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
 import { Breadcrumb, Button, Layout, Menu, MenuProps, Space, theme } from 'antd'
 import { NewBreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb'
@@ -45,7 +45,6 @@ min-height: 100vh;
 }
 .standard-layout-menu-main {
   padding: 8px;
-  position: sticky;
   top: 0;
 }
 .standard-layout-menu-toggler {
@@ -96,12 +95,10 @@ type LayoutAdminProps = {
 
 export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb, menuProps }: LayoutAdminProps) {
   const navigate = useNavigate()
-  const [collapsed, setCollapsed] = useState(false)
-  const {
-    token: { colorBgContainer, colorBorder }
-  } = theme.useToken()
+  const [collapsed] = useState(false)
+  const { token } = theme.useToken()
 
-  const handleToggleCollapseMenu = () => setCollapsed(!collapsed)
+  // const handleToggleCollapseMenu = () => setCollapsed(!collapsed)
 
   const MENU_ITEMS: MenuProps['items'] = [
     {
@@ -167,6 +164,12 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
       ]
     },
     {
+      key: 'publications',
+      icon: <BookOutlined />,
+      label: 'Publications',
+      onClick: () => navigate('/publications')
+    },
+    {
       key: 'kbs',
       icon: <BookOutlined />,
       label: 'Knowledge Bases',
@@ -199,24 +202,22 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
 
   return (
     <StyledLayout>
-      <Layout.Sider width={300} trigger={null} collapsible collapsed={collapsed}>
+      <Layout.Sider width={300} trigger={null} collapsible collapsed={collapsed} style={{ background: token.colorBgElevated, borderRight: `1px solid ${token.colorSplit}`, position: 'sticky', top: 0, maxHeight: '100vh' }}>
         <div className='standard-layout-menu'>
-          <div className='standard-layout-menu-1'>
-            <Menu
-              className='standard-layout-menu-main'
-              theme="dark"
-              mode="inline"
-              items={MENU_ITEMS}
-              {...menuProps}
-            />
-          </div>
-          <div className='standard-layout-menu-2'>
-            <button className='standard-layout-menu-toggler' onClick={handleToggleCollapseMenu}>{collapsed ? <RightOutlined /> : <LeftOutlined />}</button>
-          </div>
+          <Layout.Header style={{ background: token.colorBgContainer, boxShadow: token.boxShadow, position: 'sticky', top: 0, zIndex: 1, justifyContent: 'center', fontWeight: 900 }} className='standard-layout-header'>
+            ADMIN
+          </Layout.Header>
+          <Menu
+            className='standard-layout-menu-main'
+            style={{ border: 'none', overflowY: 'auto', background: 'transparent' }}
+            mode="inline"
+            items={MENU_ITEMS}
+            {...menuProps}
+          />
         </div>
       </Layout.Sider>
       <Layout className="site-layout">
-        <Layout.Header style={{ background: colorBgContainer }} className='standard-layout-header'>
+        <Layout.Header style={{ background: token.colorBgContainer, boxShadow: token.boxShadow, position: 'sticky', top: 0, zIndex: 1 }} className='standard-layout-header'>
           <div className='standard-layout-header-1'>{headerExtra}</div>
           <div className='standard-layout-header-2'>
             <UserMenu />
@@ -224,9 +225,9 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
         </Layout.Header>
         <LayoutBody>
           <Space direction='vertical' style={{ width: '100%' }}>
-            {!!breadcrumb && <div className='layout-breadcrumb' style={{ background: colorBgContainer }}><Breadcrumb items={breadcrumb} itemRender={itemRender} /></div>}
-            <div style={{ width: '100%', background: colorBgContainer }} className='layout-content'>
-              {!!applet && <div className='layout-content-applet' style={{ borderBottom: `1px solid ${colorBorder}` }}>{applet}</div>}
+            {!!breadcrumb && <div className='layout-breadcrumb' style={{ background: token.colorBgContainer }}><Breadcrumb items={breadcrumb} itemRender={itemRender} /></div>}
+            <div style={{ width: '100%', background: token.colorBgContainer }} className='layout-content'>
+              {!!applet && <div className='layout-content-applet' style={{ borderBottom: `1px solid ${token.colorBorder}` }}>{applet}</div>}
               {!!children && <div className='layout-content-body'>{children}</div>}
             </div>
           </Space>

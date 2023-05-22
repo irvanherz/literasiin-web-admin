@@ -34,4 +34,13 @@ export default class WalletsService {
       throw new ApiError(err)
     }
   }
+
+  static async createDepositOrder (id: number, payload: any) {
+    try {
+      const resp = await axiosInstance.post(`${BASEURL}/wallets/${id}/deposit-order`, payload)
+      return ApiData.fromResponse(resp)
+    } catch (err: any) {
+      throw new ApiError(err)
+    }
+  }
 }

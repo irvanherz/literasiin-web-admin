@@ -43,22 +43,26 @@ export default function CurrentUserContextProvider ({ children }: CurrentUserCon
   )
 
   useEffect(() => {
-    const fun = async () => {
-      try {
-        setValue({ status: 'idle', data: undefined })
-        if (auth.status === 'authenticated') {
-          const result = await userQuery.refetch()
-          const data = result.data?.data
-          setValue(data ? { status: 'success', data } : { status: 'error', data: undefined })
-        } else if (auth.status === 'unauthenticated') {
-          setValue({ status: 'success', data: undefined })
+    if (auth.status !== 'idle') {
+      console.log('Load user', auth.status)
+
+      const fun = async () => {
+        try {
+          setValue({ status: 'idle', data: undefined })
+          if (auth.status === 'authenticated') {
+            const result = await userQuery.refetch()
+            const data = result.data?.data
+            setValue(data ? { status: 'success', data } : { status: 'error', data: undefined })
+          } else if (auth.status === 'unauthenticated') {
+            setValue({ status: 'success', data: undefined })
+          }
+        } catch (err) {
+          console.log(err)
+          setValue({ status: 'error', data: undefined })
         }
-      } catch (err) {
-        console.log(err)
-        setValue({ status: 'error', data: undefined })
       }
+      fun()
     }
-    fun()
   }, [auth.status])
 
   const render = useCallback(() => {

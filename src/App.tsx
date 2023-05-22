@@ -60,11 +60,6 @@ const router = createBrowserRouter([
     element: <ManageUserDetails />
   },
   {
-    id: '/publications',
-    path: '/publications',
-    element: <ManagePublications />
-  },
-  {
     id: '/media',
     path: '/media',
     element: <ManageMedia />
@@ -118,6 +113,11 @@ const router = createBrowserRouter([
     id: '/articles/categories',
     path: '/articles/categories',
     element: <ManageArticleCategories />
+  },
+  {
+    id: '/publications',
+    path: '/publications',
+    element: <ManagePublications />
   },
   {
     id: '/kbs',
