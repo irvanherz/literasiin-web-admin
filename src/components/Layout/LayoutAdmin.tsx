@@ -1,10 +1,11 @@
 import {
   BookOutlined,
-  FileImageOutlined, HomeFilled, SettingOutlined, UserOutlined
+  FileImageOutlined, HomeFilled, MenuFoldOutlined, MenuUnfoldOutlined, SettingOutlined, UserOutlined
 } from '@ant-design/icons'
 import { Breadcrumb, Button, Layout, Menu, MenuProps, Space, theme } from 'antd'
 import { NewBreadcrumbProps } from 'antd/es/breadcrumb/Breadcrumb'
 import useAuthContext from 'hooks/useAuthContext'
+import { DEFAULT_LOGO } from 'libs/variables'
 import { ReactNode, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
@@ -34,14 +35,6 @@ min-height: 100vh;
   display: flex;
   flex-direction: column;
   height: inherit;
-  .standard-layout-menu-1 {
-    flex: 1;
-  }
-  .standard-layout-menu-2 {
-    flex: 0;
-    position: sticky;
-    bottom: 0;
-  }
 }
 .standard-layout-menu-main {
   padding: 8px;
@@ -95,10 +88,10 @@ type LayoutAdminProps = {
 
 export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb, menuProps }: LayoutAdminProps) {
   const navigate = useNavigate()
-  const [collapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
   const { token } = theme.useToken()
 
-  // const handleToggleCollapseMenu = () => setCollapsed(!collapsed)
+  const handleToggleCollapseMenu = () => setCollapsed(!collapsed)
 
   const MENU_ITEMS: MenuProps['items'] = [
     {
@@ -204,8 +197,8 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
     <StyledLayout>
       <Layout.Sider width={300} trigger={null} collapsible collapsed={collapsed} style={{ background: token.colorBgElevated, borderRight: `1px solid ${token.colorSplit}`, position: 'sticky', top: 0, maxHeight: '100vh' }}>
         <div className='standard-layout-menu'>
-          <Layout.Header style={{ background: token.colorBgContainer, boxShadow: token.boxShadow, position: 'sticky', top: 0, zIndex: 1, justifyContent: 'center', fontWeight: 900 }} className='standard-layout-header'>
-            ADMIN
+          <Layout.Header style={{ padding: 0, background: token.colorBgContainer, boxShadow: token.boxShadow, position: 'sticky', top: 0, zIndex: 1, justifyContent: 'center', alignItems: 'center', fontWeight: 900 }} className='standard-layout-header'>
+            <img src={DEFAULT_LOGO} style={{ height: 32 }} /> {!collapsed && <span style={{ fontSize: 20, paddingLeft: 16 }}>ADMIN</span>}
           </Layout.Header>
           <Menu
             className='standard-layout-menu-main'
@@ -218,6 +211,13 @@ export default function LayoutAdmin ({ children, headerExtra, applet, breadcrumb
       </Layout.Sider>
       <Layout className="site-layout">
         <Layout.Header style={{ background: token.colorBgContainer, boxShadow: token.boxShadow, position: 'sticky', top: 0, zIndex: 1 }} className='standard-layout-header'>
+          <Button
+            size='small'
+            shape='circle'
+            style={{ left: 0, position: 'absolute', transform: 'translate(-50%, -50%)', top: '50%' }}
+            onClick={handleToggleCollapseMenu}
+            icon={ collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined style={{ fontSize: 12 }} />}
+          />
           <div className='standard-layout-header-1'>{headerExtra}</div>
           <div className='standard-layout-header-2'>
             <UserMenu />

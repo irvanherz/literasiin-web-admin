@@ -44,7 +44,7 @@ const STATUS_OPTIONS = [{ label: 'Any', value: 'any' }, { label: 'Draft', value:
 
 export default function ManagePublications () {
   const [filters, apiFilter, refilter] = useQueryFilters(FILT)
-  const { data, refetch } = usePublications(apiFilter)
+  const { data, refetch } = usePublications({ ...apiFilter, includeAddress: true })
   const publications: any[] = data?.data || []
   const meta = data?.meta || {}
 
