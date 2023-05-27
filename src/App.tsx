@@ -11,6 +11,7 @@ import ManageKbCreate from 'pages/ManageKbCreate'
 import ManageKbs from 'pages/ManageKbs'
 import ManageKbUpdate from 'pages/ManageKbUpdate'
 import ManageMedia from 'pages/ManageMedia'
+import ManagePublicationDetails from 'pages/ManagePublicationDetails'
 import ManagePublications from 'pages/ManagePublications'
 import ManageStories from 'pages/ManageStories'
 import ManageStoryCategories from 'pages/ManageStoryCategories'
@@ -118,6 +119,11 @@ const router = createBrowserRouter([
     id: '/publications',
     path: '/publications',
     element: <ManagePublications />
+  },
+  {
+    id: '/publications/:publicationId/:sectionId',
+    path: '/publications/:publicationId/:sectionId',
+    element: <ManagePublicationDetails />
   },
   {
     id: '/kbs',

@@ -1,4 +1,4 @@
-import { DeleteFilled, EditFilled, MoreOutlined, SendOutlined } from '@ant-design/icons'
+import { DeleteFilled, EditFilled, InfoOutlined, MoreOutlined, SendOutlined } from '@ant-design/icons'
 import { Button, Descriptions, Dropdown, List, MenuProps, message, Modal, Space, Tag } from 'antd'
 import PublicationCover from 'components/PublicationCover'
 import usePublicationDelete from 'hooks/usePublicationDelete'
@@ -89,6 +89,9 @@ export default function PublicationListItem ({ publication, afterUpdated, afterD
       extra={
         <div className='list-item-actions'>
           <Space>
+            <Link to={`/publications/${publication.id}/details`}>
+              <Button shape='circle' icon={<InfoOutlined />} />
+            </Link>
             <Dropdown
               menu={menu}
             >

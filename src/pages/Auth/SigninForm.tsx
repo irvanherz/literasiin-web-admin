@@ -9,7 +9,7 @@ export default function SigninForm () {
         name='username'
         rules={[{ required: true, message: 'Username or email is required' }]}
       >
-        <Input type="email" placeholder="Email"/>
+        <Input placeholder="Email"/>
       </Form.Item>
       <Form.Item
         label="Password"
